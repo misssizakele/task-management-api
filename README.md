@@ -13,7 +13,7 @@ The Task Management API allows users to manage tasks with features including use
 - **Backend**: Java with Spring Boot
 - **Database**: PostgreSQL
 - **Authentication**: JWT
-- **Testing**: JUnit, Postman
+- **Testing**: SOAP, Postman
 
 ## Setup Instructions
 1. Clone the repository:
