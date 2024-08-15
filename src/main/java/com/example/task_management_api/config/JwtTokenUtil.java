@@ -15,15 +15,22 @@ import java.util.function.Function;
 @Component
 public class JwtTokenUtil {
 
-    private SecretKey secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS512);
+    private final SecretKey secretKey;
 
-    @Value("${jwt.token.expiration}")
+
     private long expirationTime;
+
+    public JwtTokenUtil() {
+        // Hardcoded Base64-encoded key
+        String base64Key = "EfZU6IZStn7PiNnPVcJs+b2PwGKo15kul3hBnBmzcS1C9gm7/fXaAIAV0aMdYEnXAEA8Ctud+ay6v3gk81yIXQ=="; // Replace with your actual key
+        this.secretKey = Keys.hmacShaKeyFor(java.util.Base64.getDecoder().decode(base64Key));
+    }
 
     public String generateToken(UserDetails userDetails) {
         return Jwts.builder()
                 .setSubject(userDetails.getUsername())
-                .signWith(secretKey)
+                .setExpiration(new Date(System.currentTimeMillis() + expirationTime))
+                .signWith(secretKey, SignatureAlgorithm.HS512)
                 .compact();
     }
 
@@ -46,8 +53,9 @@ public class JwtTokenUtil {
     }
 
     private Claims getAllClaimsFromToken(String token) {
-        return Jwts.parser()
+        return Jwts.parserBuilder()
                 .setSigningKey(secretKey)
+                .build()
                 .parseClaimsJws(token)
                 .getBody();
     }
