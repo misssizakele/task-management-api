@@ -8,6 +8,8 @@ import com.example.task_management_api.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class TaskService {
 
@@ -29,5 +31,13 @@ public class TaskService {
         task.setAssignedUser(assignedUser);
 
         return taskRepository.save(task);
+    }
+
+    public List<Task> getTasksForUser(User user, String status) {
+        if (status != null && !status.isEmpty()) {
+            return taskRepository.findByAssignedUserAndStatus(user, status);
+        } else {
+            return taskRepository.findByAssignedUser(user);
+        }
     }
 }

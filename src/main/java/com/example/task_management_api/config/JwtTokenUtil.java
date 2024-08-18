@@ -18,11 +18,11 @@ public class JwtTokenUtil {
     private final SecretKey secretKey;
 
 
-    private long expirationTime;
+    private long expirationTime = 3600000;
 
     public JwtTokenUtil() {
         // Hardcoded Base64-encoded key
-        String base64Key = "EfZU6IZStn7PiNnPVcJs+b2PwGKo15kul3hBnBmzcS1C9gm7/fXaAIAV0aMdYEnXAEA8Ctud+ay6v3gk81yIXQ=="; // Replace with your actual key
+        String base64Key = "rr9SjUcdku4cPuAYdLibsReJ8I8vfFkILNBe+H0SAz5tvglEhTTlknzdg6tw4SdbV7v1TB1fUadqvqwm6+4TAQ=="; // Replace with your actual key
         this.secretKey = Keys.hmacShaKeyFor(java.util.Base64.getDecoder().decode(base64Key));
     }
 
@@ -34,14 +34,21 @@ public class JwtTokenUtil {
                 .compact();
     }
 
+
     public Boolean validateToken(String token, UserDetails userDetails) {
         final String username = getUsernameFromToken(token);
         return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
 
     public String getUsernameFromToken(String token) {
-        return getClaimFromToken(token, Claims::getSubject);
+        Claims claims = Jwts.parserBuilder()
+                .setSigningKey(secretKey)
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+        return claims.getSubject(); // Should return a String (username)
     }
+
 
     public Date getExpirationDateFromToken(String token) {
         return getClaimFromToken(token, Claims::getExpiration);
@@ -64,4 +71,5 @@ public class JwtTokenUtil {
         final Date expiration = getExpirationDateFromToken(token);
         return expiration.before(new Date());
     }
+
 }

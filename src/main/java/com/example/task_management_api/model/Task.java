@@ -14,6 +14,8 @@ public class Task {
 
     private String description;
 
+    private String status;
+
     private Date dueDate;
 
     private String priority;
@@ -23,6 +25,15 @@ public class Task {
     private User assignedUser; // Assuming you have a User entity for assigned users
 
     // Getters and Setters
+
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
     public Long getId() {
         return id;
