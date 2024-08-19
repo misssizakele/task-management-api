@@ -1,6 +1,7 @@
 package com.example.task_management_api.controller;
 
 import com.example.task_management_api.dto.TaskDTO;
+import com.example.task_management_api.dto.UpdateTaskStatusDTO;
 import com.example.task_management_api.model.Task;
 import com.example.task_management_api.model.User;
 import com.example.task_management_api.repository.UserRepository;
@@ -48,5 +49,15 @@ public class TaskController {
     public ResponseEntity<Void> deleteTask(@PathVariable Long id) {
         taskService.deleteTask(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/{id}/status")
+    public ResponseEntity<Task> updateTaskStatus(@PathVariable Long id, @RequestBody UpdateTaskStatusDTO updateTaskStatusDTO) {
+        Task updatedTask = taskService.updateTaskStatus(id, updateTaskStatusDTO.getStatus());
+        if (updatedTask != null) {
+            return ResponseEntity.ok(updatedTask);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 }

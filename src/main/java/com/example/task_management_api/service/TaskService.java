@@ -83,4 +83,15 @@ public class TaskService {
         }
         taskRepository.deleteById(taskId);
     }
+
+    public Task updateTaskStatus(Long taskId, String status) {
+        Optional<Task> optionalTask = taskRepository.findById(taskId);
+        if (optionalTask.isPresent()) {
+            Task task = optionalTask.get();
+            task.setStatus(status);
+            return taskRepository.save(task);
+        } else {
+            return null;
+        }
+    }
 }
