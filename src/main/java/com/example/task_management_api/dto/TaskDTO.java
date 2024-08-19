@@ -9,6 +9,7 @@ public class TaskDTO {
     private Date dueDate;
     private String priority;
     private Long assignedUserId;
+    private String status;
 
     // Getters and Setters
 
@@ -50,5 +51,13 @@ public class TaskDTO {
 
     public void setAssignedUserId(Long assignedUserId) {
         this.assignedUserId = assignedUserId;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

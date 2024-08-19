@@ -26,6 +26,7 @@ public class TaskService {
         task.setDescription(taskDTO.getDescription());
         task.setDueDate(taskDTO.getDueDate());
         task.setPriority(taskDTO.getPriority());
+        task.setStatus("Pending");
 
         // Find the assigned user by ID
         User assignedUser = userRepository.findById(taskDTO.getAssignedUserId()).orElse(null);

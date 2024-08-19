@@ -24,6 +24,10 @@ public class Task {
     @JoinColumn(name = "user_id")
     private User assignedUser; // Assuming you have a User entity for assigned users
 
+    public Task() {
+        this.status = "pending";
+    }
+
     // Getters and Setters
 
 
