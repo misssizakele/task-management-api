@@ -37,4 +37,10 @@ public class TaskController {
 
         return taskService.getTasksForUser(currentUser, status);
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Task> updateTask(@PathVariable Long id, @RequestBody TaskDTO taskDTO) {
+        Task updatedTask = taskService.updateTask(id, taskDTO);
+        return ResponseEntity.ok(updatedTask);
+    }
 }

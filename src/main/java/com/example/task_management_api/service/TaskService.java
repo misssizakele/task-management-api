@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TaskService {
@@ -39,5 +40,40 @@ public class TaskService {
         } else {
             return taskRepository.findByAssignedUser(user);
         }
+    }
+
+    public Task updateTask(Long taskId, TaskDTO taskDTO) {
+        Optional<Task> taskOptional = taskRepository.findById(taskId);
+        if (!taskOptional.isPresent()) {
+            throw new RuntimeException("Task not found");
+        }
+
+        Task task = taskOptional.get();
+
+        if (taskDTO.getTitle() != null) {
+            task.setTitle(taskDTO.getTitle());
+        }
+
+        if (taskDTO.getDescription() != null) {
+            task.setDescription(taskDTO.getDescription());
+        }
+
+        if (taskDTO.getDueDate() != null) {
+            task.setDueDate(taskDTO.getDueDate());
+        }
+
+        if (taskDTO.getPriority() != null) {
+            task.setPriority(taskDTO.getPriority());
+        }
+
+        if (taskDTO.getAssignedUserId() != null) {
+            Optional<User> userOptional = userRepository.findById(taskDTO.getAssignedUserId());
+            if (!userOptional.isPresent()) {
+                throw new RuntimeException("User not found");
+            }
+            task.setAssignedUser(userOptional.get());
+        }
+
+        return taskRepository.save(task);
     }
 }
